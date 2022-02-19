@@ -67,15 +67,18 @@ operator.addEventListener("click", function(e){
 });
 
 equal.addEventListener("click", function(){
-    if(operate(previousNumber, currentNumber, previousSymbol) != false){
-        previousInput.textContent = previousNumber + " " + currentSymbol + " " + currentNumber + " = ";
-        result = strip(result);
-        previousNumber = result;
-        currentInput.textContent = result;
-        currentNumber = '';
-    }
-    else{
-        clearNumbers();
+    if(currentNumber != '' && previousNumber != ''){
+        if(operate(previousNumber, currentNumber, previousSymbol) != false){
+            console.log("yay")
+            previousInput.textContent = previousNumber + " " + currentSymbol + " " + currentNumber + " = ";
+            result = strip(result);
+            previousNumber = result;
+            currentInput.textContent = result;
+            currentNumber = '';
+        }
+        else{
+            clearNumbers();
+        }
     }
 });
 
