@@ -12,99 +12,144 @@ const removeNumber = document.querySelector('.delete');
 const clear = document.querySelector('.clear');
 
 
-//store values user inputs
-let display = '';
-//store operand symbol user inputs
-let symbol = '';
-//stores both numbers that are operated on
-let firstNumber = '0';
-let secondNumber = '0';
-let finalAnswer = '0';
+//store values user inputs and symbol
+let currentNumber = '0';
+let previousNumber = '';
+let currentSymbol = '';
+let previousSymbol = '';
+let result = '';
+
 
 window.onload = currentInput.textContent = '0';
 
 numbers.addEventListener("click", function(e){
-    //allows a max of 15 digits
-    if(e.target.className != 'numbers' && e.target.className != 'equal' && display.length < 15){
-        //prevents leading zero if number is not a decimal
-        if(e.target.textContent == '0' && display.length == 0){
-            currentInput.textContent = '0';
-        }
-        else{
-            //allows only one decimal symbol in number
-            if(e.target.textContent == '.' && display.includes('.')){
-                display += '';
-            }
-            //allows leading '0' if a decimal directly follows
-            else if(e.target.textContent == '.' && display.length == 0){
-                display += '0' + e.target.textContent;
-            }
-            else{
-                display += e.target.textContent;
-            }
-            currentInput.textContent = display;
-        }
-    }
+    appendNumber(e.target);
 });
+
 //deletes last number user inputted
 removeNumber.addEventListener("click", function(){
-    display = display.slice(0, -1);
-    currentInput.textContent = display;
-    
-    if(display == ''){
-        currentInput.textContent = '0';
+    removeDigit();
+});
+
+//clears all history
+clear.addEventListener("click", function(){
+    clearNumbers();
+});
+
+//stores which operator button is pressed and calls operate function
+operator.addEventListener("click", function(e){
+    if(e.target.className != 'symbols'){
+        currentSymbol = e.target.textContent;
+        console.log(currentNumber)
+        console.log(previousNumber)
+        console.log(previousSymbol)
+        if(currentNumber == '' && previousNumber == ''){
+            previousNumber = 0;
+        }
+        else if(currentNumber != '' && previousNumber == ''){
+            previousNumber = currentNumber;
+        }
+        else if(currentNumber != '' && previousNumber != ''){
+            if(operate(previousNumber, currentNumber, previousSymbol) != false){
+                result = strip(result);
+                previousNumber = result;
+                currentInput.textContent = result;
+            }
+            else{
+                clearNumbers();
+            }
+        }
+        previousSymbol = currentSymbol;
+        previousInput.textContent = previousNumber + " " + previousSymbol;
+
+        currentNumber = '';
     }
 });
 
-//clears all calulation history
-clear.addEventListener("click", function(){
-    display = '';
-    previousInput.textContent = '';
-    currentInput.textContent = '0';
-});
-
-operator.addEventListener("click", function(e){
-    if(e.target.className != 'symbols'){
-        symbol = e.target.textContent;
-
-        if(display == ''){
-            display = '0';
-        }
-        previousInput.textContent = display + " " + symbol;
-
-        firstNumber = display;
-        //display = '';
-        //operate(symbol, firstNumber, )
+equal.addEventListener("click", function(){
+    if(operate(previousNumber, currentNumber, previousSymbol) != false){
+        previousInput.textContent = previousNumber + " " + currentSymbol + " " + currentNumber + " = ";
+        result = strip(result);
+        previousNumber = result;
+        currentInput.textContent = result;
+        currentNumber = '';
+    }
+    else{
+        clearNumbers();
     }
 });
 
 //Mathematical operations
-function add(num1, num2){
-    return num1 + num2;
-};
-function subtract(num1, num2){
-    return num1 - num2;
-};
-function multiply(num1, num2){
-    return num1 * num2;
-};
-function divide(num1, num2){
-    return num1 / num2;
-};
+function operate(num1, num2, operator){
 
-function operate(operator, num1, num2){
-    let answer = '';
     if(operator == '+'){
-        answer = num1 + num2;
+        result = +num1 + +num2;
     }
     else if(operator == '-'){
-        answer = num1 - num2;
+        result = num1 - num2;
     }
-    else if(operator == 'x'){
-        answer = num1 * num2;
+    else if(operator == '×'){
+        result = num1 * num2;
     }
-    else{
-        answer = num1 / num2;
+    else if(operator == '÷'){
+        if(num2 == '0'){
+            alert("You can't divide by 0!");
+            return false;
+        }
+        else{
+            result = num1 / num2;
+        }
     }
-    return 
+};
+
+//clears all calculation history
+function clearNumbers(){
+    currentNumber = '';
+    previousNumber = '';
+    currentSymbol = '';
+    result = '';
+    previousInput.textContent = '';
+    currentInput.textContent = '0';
+};
+
+//removes single digit from currentNumber
+function removeDigit(){
+    currentNumber = currentNumber.slice(0, -1);
+    currentInput.textContent = currentNumber;
+    
+    //display '0' if all numbers are deleted
+    if(currentNumber == ''){
+        currentInput.textContent = '0';
+    }
+};
+
+//rounds large numbers to 7 decimal places
+function strip(number) {
+    return parseFloat(number.toPrecision(7));
+}
+
+function appendNumber(number){
+    //allows a max of 15 digits
+    if(number.className != 'numbers' && number.className != 'equal' && currentNumber.length < 12){
+        //prevents leading zero if number is not a decimal
+        if(number.textContent == '0' && currentNumber == '0'){
+            currentNumber = '0'
+        }
+        //allows only one decimal symbol in number
+        else if(number.textContent == '.' && currentNumber.includes('.')){
+            currentNumber += '';
+        }
+        //allows leading '0' if a decimal directly follows
+        else if(number.textContent == '.' && currentNumber.length == 0){
+            currentNumber += '0' + number.textContent;
+        }
+        else{
+            if(currentNumber == '0')
+            currentNumber = number.textContent
+            else
+            currentNumber += number.textContent;
+        }
+        
+        currentInput.textContent = currentNumber;
+    }
 };
