@@ -13,7 +13,7 @@ const clear = document.querySelector('.clear');
 
 
 //store values user inputs and symbol
-let currentNumber = '0';
+let currentNumber = '';
 let previousNumber = '';
 let currentSymbol = '';
 let previousSymbol = '';
@@ -40,9 +40,7 @@ clear.addEventListener("click", function(){
 operator.addEventListener("click", function(e){
     if(e.target.className != 'symbols'){
         currentSymbol = e.target.textContent;
-        console.log(currentNumber)
-        console.log(previousNumber)
-        console.log(previousSymbol)
+
         if(currentNumber == '' && previousNumber == ''){
             previousNumber = 0;
         }
@@ -69,7 +67,6 @@ operator.addEventListener("click", function(e){
 equal.addEventListener("click", function(){
     if(currentNumber != '' && previousNumber != ''){
         if(operate(previousNumber, currentNumber, previousSymbol) != false){
-            console.log("yay")
             previousInput.textContent = previousNumber + " " + currentSymbol + " " + currentNumber + " = ";
             result = strip(result);
             previousNumber = result;
