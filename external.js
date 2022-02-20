@@ -40,9 +40,9 @@ clear.addEventListener("click", function(){
 operator.addEventListener("click", function(e){
     if(e.target.className != 'symbols'){
         currentSymbol = e.target.textContent;
-
+       
         if(currentNumber == '' && previousNumber == ''){
-            previousNumber = 0;
+            previousNumber = '0';
         }
         else if(currentNumber != '' && previousNumber == ''){
             previousNumber = currentNumber;
@@ -129,11 +129,11 @@ function strip(number) {
 }
 
 function appendNumber(number){
-    //allows a max of 15 digits
+    //allows a max of 12 digits
     if(number.className != 'numbers' && number.className != 'equal' && currentNumber.length < 12){
         //prevents leading zero if number is not a decimal
         if(number.textContent == '0' && currentNumber == '0'){
-            currentNumber = '0'
+            currentNumber = '0';
         }
         //allows only one decimal symbol in number
         else if(number.textContent == '.' && currentNumber.includes('.')){
@@ -145,11 +145,10 @@ function appendNumber(number){
         }
         else{
             if(currentNumber == '0')
-            currentNumber = number.textContent
+                currentNumber = number.textContent
             else
-            currentNumber += number.textContent;
+                currentNumber += number.textContent;
         }
-        
         currentInput.textContent = currentNumber;
     }
 };
