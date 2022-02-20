@@ -140,8 +140,8 @@ function appendNumber(number){
             currentNumber += '';
         }
         //allows leading '0' if a decimal directly follows
-        else if(number.textContent == '.' && currentNumber.length == 0){
-            currentNumber += '0' + number.textContent;
+        else if(number.textContent == '.' && !currentNumber.includes('.') && currentNumber.length <= 1){
+            currentNumber = '0' + number.textContent;
         }
         else{
             if(currentNumber == '0')
