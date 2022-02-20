@@ -49,7 +49,7 @@ operator.addEventListener("click", function(e){
         }
         else if(currentNumber != '' && previousNumber != ''){
             if(operate(previousNumber, currentNumber, previousSymbol) != false){
-                result = strip(result);
+                result = roundNumber(result);
                 previousNumber = result;
                 currentInput.textContent = result;
             }
@@ -68,7 +68,7 @@ equal.addEventListener("click", function(){
     if(currentNumber != '' && previousNumber != ''){
         if(operate(previousNumber, currentNumber, previousSymbol) != false){
             previousInput.textContent = previousNumber + " " + currentSymbol + " " + currentNumber + " = ";
-            result = strip(result);
+            result = roundNumber(result);
             previousNumber = result;
             currentInput.textContent = result;
             currentNumber = '';
@@ -124,8 +124,8 @@ function removeDigit(){
 };
 
 //rounds large numbers to 7 decimal places
-function strip(number) {
-    return parseFloat(number.toPrecision(7));
+function roundNumber(number) {
+    return number.toPrecision(7);
 }
 
 function appendNumber(number){
