@@ -125,7 +125,8 @@ function removeDigit(){
 
 //rounds large numbers to 7 decimal places
 function roundNumber(number) {
-    return number.toPrecision(7);
+    number =  +number.toPrecision(7);
+    return number.toString();
 }
 
 function appendNumber(number){
