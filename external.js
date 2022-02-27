@@ -141,7 +141,7 @@ function appendNumber(number){
             currentNumber += '';
         }
         //allows leading '0' if a decimal directly follows
-        else if(number.textContent == '.' && !currentNumber.includes('.') && currentNumber.length <= 1){
+        else if(number.textContent == '.' && !currentNumber.includes('.') && currentNumber.length <= 0){
             currentNumber = '0' + number.textContent;
         }
         else{
